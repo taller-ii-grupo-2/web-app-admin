@@ -1,19 +1,15 @@
 
 const fixed_url = 'https://hypechatgrupo2-app-server-stag.herokuapp.com/'
-const OK = 200
+export const OK = 200
 
 class Http {
-  async get (url, callback) {
-    const rawResponse = await fetch(fixed_url + url, {
+  get (url, callback) {
+    let response = fetch(fixed_url + url, {
       method: 'GET',
-      headers: this.getHeaders()
+      headers: {'Content-Type': 'application/json',
+                'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
     })
-    //this.checkIfUnauthorized(rawResponse.status, callback)
-    const content = await rawResponse.json()
-    return {
-      content,
-      status: rawResponse.status
-    }
+    return response
   }
 
   async delete (url, payload, callback) {
@@ -22,7 +18,6 @@ class Http {
       headers: this.getHeaders(),
       body: JSON.stringify(payload)
     })
-    //this.checkIfUnauthorized(rawResponse.status, callback)
     const content = await rawResponse.json()
     return {
       content,
@@ -31,22 +26,12 @@ class Http {
   }
 
   post (url, payload, callback) {
-    fetch(fixed_url + url, {
+    let response = fetch(fixed_url + url, {
       method: 'POST',
       headers: this.getHeaders(),
       body: JSON.stringify(payload)
     })
-    .then(response => {return response.json()})
-    .catch(error => document.write(error))
-    //this.checkIfUnauthorized(rawResponse.status, callback)
-    // return {
-    //   content,
-    //   status: rawResponse.status
-    // }
-    
-
-
-    //this.checkIfUnauthorized(rawResponse.status, callback)
+    return response
   }
 
   async put (url, payload, callback) {
@@ -63,20 +48,11 @@ class Http {
     }
   }
 
-  // checkIfUnauthorized (status, callback) {
-  //   if (status === httpStatus.UNAUTHORIZED) {
-  //     Auth.logout(callback)
-  //   }
-  // }
-
   getHeaders () {
     let headers = {
       'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
-    // if (Auth.isLogged()) {
-    //   headers['Authorization'] = 'Bearer ' + Auth.getToken()
-    // }
     return headers
   }
 }
