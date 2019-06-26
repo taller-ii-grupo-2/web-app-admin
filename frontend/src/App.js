@@ -5,6 +5,7 @@ import Auth from './components/auth'
 import User from './components/users'
 import Orga from './components/organizations'
 import Index from './components/indice'
+import UserForm from './forms/user_form'
 
 class App extends Component {
 	
@@ -24,6 +25,8 @@ class App extends Component {
                 render={routeProps => <Orga {...routeProps}/>} />
               <Route exact path="/index"
                 render={routeProps => <Index {...routeProps}/>} />
+              <Route exact path="/users/form"
+                render={routeProps => <UserForm {...routeProps}/>} />
             </div>
           </Router>
         </div>

@@ -1,13 +1,14 @@
 
-const fixed_url = 'https://hypechatgrupo2-app-server-stag.herokuapp.com/'
+const fixed_url = 'http://localhost:5000/' // 'https://hypechatgrupo2-app-server-stag.herokuapp.com/'
 export const OK = 200
+export const UNAUTHORIZED = 401
+export const BAD_REQUEST = 400
 
 class Http {
   get (url, callback) {
     let response = fetch(fixed_url + url, {
       method: 'GET',
-      headers: {'Content-Type': 'application/json',
-                'Authorization': 'Bearer ' + sessionStorage.getItem('token')}
+      headers: this.getHeaders()
     })
     return response
   }
@@ -51,8 +52,15 @@ class Http {
   getHeaders () {
     let headers = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json'
+      'Content-Type': 'application/json',
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'DELETE, POST, GET, PUT',
+      'Access-Control-Allow-Headers': "Content-Type, Access-Control-Allow-Headers, Authorization, Accept"
     }
+    if (sessionStorage.getItem('token')){
+      headers.Authorization = 'Bearer ' + sessionStorage.getItem('token')
+    }
+
     return headers
   }
 }

@@ -5,11 +5,15 @@ import Http, { OK } from '../service/http'
 
 class Index extends Component{
 
-  render() {
-  	
-    return (
+	logout(){
+		sessionStorage.removeItem('token')
+	}
 
-    	
+	render(){
+		if (!sessionStorage.getItem('token')){
+			return <Redirect to='/login' />;
+		}
+  	return (
     	<div className="Index">
 				<header className="Index-header">
 					<div>
@@ -17,6 +21,9 @@ class Index extends Component{
 					</div>
 					<div>
 					<Link to={"/organizations"} activeClassName="organizations">Organizations</Link>
+					</div>
+					<div>
+					<button onClick={()=>{this.logout()}} >Logout</button>
 					</div>
 					<ToastContainer/>
 				</header>
