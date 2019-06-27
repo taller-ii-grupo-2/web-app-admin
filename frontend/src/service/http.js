@@ -1,5 +1,5 @@
 
-const fixed_url = 'http://localhost:5000/' // 'https://hypechatgrupo2-app-server-stag.herokuapp.com/'
+const fixed_url = 'https://hypechatgrupo2-app-server-stag.herokuapp.com/'
 export const OK = 200
 export const UNAUTHORIZED = 401
 export const BAD_REQUEST = 400
