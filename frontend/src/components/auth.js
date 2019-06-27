@@ -8,7 +8,8 @@ class Auth extends Component{
 		super()
 		this.state = {
 			email:'',
-			password:''
+			password:'',
+			redirect: false
 		}
 	}
 
@@ -28,22 +29,23 @@ class Auth extends Component{
 		obj.password = this.state.password
 		Http.post('adminlogin',obj)
 		.then(res => {
-			return {resp:res.json(),
-							status: res.status
-						}
-		})
-		.then(response => {
-			if (response.status === OK){
-				sessionStorage.setItem('token',response.token);
+			if (res.status === OK){
+				this.setState({redirect: true})
 				toast.success('Login succesfull', { position: toast.POSITION.TOP_CENTER })
+				return res.json()
 			}else{
 				toast.error('Invalid credentials', { position: toast.POSITION.TOP_CENTER })
+			}
+		})
+		.then(response => {
+			if (this.state.redirect){
+				sessionStorage.setItem('token',response.token)
 			}
     })	
 	}
 
   render() {
-  	if (sessionStorage.getItem('token')){
+  	if (this.state.redirect || sessionStorage.getItem('token')){
   		return <Redirect to='/index' />;
   	}
 

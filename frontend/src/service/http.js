@@ -13,17 +13,13 @@ class Http {
     return response
   }
 
-  async delete (url, payload, callback) {
-    const rawResponse = await fetch(fixed_url + url, {
+  delete (url, payload, callback) {
+    let response = fetch(fixed_url + url, {
       method: 'DELETE',
       headers: this.getHeaders(),
       body: JSON.stringify(payload)
     })
-    const content = await rawResponse.json()
-    return {
-      content,
-      status: rawResponse.status
-    }
+    return response
   }
 
   post (url, payload, callback) {
@@ -35,32 +31,23 @@ class Http {
     return response
   }
 
-  async put (url, payload, callback) {
-    const rawResponse = await fetch(fixed_url + url, {
+  postput (url, payload, callback) {
+    let response = fetch(fixed_url + url, {
       method: 'PUT',
       headers: this.getHeaders(),
       body: JSON.stringify(payload)
     })
-    //this.checkIfUnauthorized(rawResponse.status, callback)
-    const content = await rawResponse.json()
-    return {
-      content,
-      status: rawResponse.status
-    }
+    return response
   }
 
   getHeaders () {
     let headers = {
       'Accept': 'application/json',
-      'Content-Type': 'application/json',
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'DELETE, POST, GET, PUT',
-      'Access-Control-Allow-Headers': "Content-Type, Access-Control-Allow-Headers, Authorization, Accept"
+      'Content-Type': 'application/json'
     }
     if (sessionStorage.getItem('token')){
       headers.Authorization = 'Bearer ' + sessionStorage.getItem('token')
     }
-
     return headers
   }
 }

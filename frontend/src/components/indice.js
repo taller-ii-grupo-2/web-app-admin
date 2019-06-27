@@ -4,13 +4,21 @@ import {  ToastContainer, toast } from 'react-toastify';
 import Http, { OK } from '../service/http'
 
 class Index extends Component{
+	constructor(){
+		super()
+		this.state = {
+			redirect: false
+		}
+	}
 
 	logout(){
 		sessionStorage.removeItem('token')
+		this.setState({redirect:true})
+		return <Redirect to='/login' />;
 	}
 
 	render(){
-		if (!sessionStorage.getItem('token')){
+		if (this.state.redirect){
 			return <Redirect to='/login' />;
 		}
   	return (
@@ -22,9 +30,7 @@ class Index extends Component{
 					<div>
 					<Link to={"/organizations"} activeClassName="organizations">Organizations</Link>
 					</div>
-					<div>
-					<button onClick={()=>{this.logout()}} >Logout</button>
-					</div>
+					<button onClick={()=>{this.logout()}} >Logut</button>
 					<ToastContainer/>
 				</header>
 			</div>

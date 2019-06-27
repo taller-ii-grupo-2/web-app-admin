@@ -17,7 +17,7 @@ class UserForm extends Component{
 	}
 
 	handleEmail(text){
-		this.setState({email:text.target.value})
+		this.setState({mail:text.target.value})
 	}
 
 	handlePassword(text){
@@ -50,17 +50,20 @@ class UserForm extends Component{
 
 		Http.post('admin/users',obj)
 		.then(res => {
-			return {resp:res.json(),
-							status: res.status
-						}
+			if (res.status === OK){
+				this.setState({redirect: true})
+				toast.success('User added', { position: toast.POSITION.TOP_CENTER })
+			}
+			return res.json()
 		})
 		.then(response => {
-			if (response.status === OK){
-				this.setState({redirect:true})
-			}else if(response.status === BAD_REQUEST){
-				toast.error(response.resp.message, { position: toast.POSITION.TOP_CENTER })
-			}else{
-				sessionStorage.removeItem('token')
+			if (!this.state.redirect){
+				if (response){
+					toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
+				}else{
+					toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
+					sessionStorage.removeItem('token')
+				}
 			}
     })	
 	}
