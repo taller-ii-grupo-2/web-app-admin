@@ -15,7 +15,9 @@ class Orga extends Component{
       dataUpdate: {},
       redirectWords: false,
       dataWords: {},
-      redirectIndex: false
+      redirectIndex: false,
+      redirectBot: false,
+      dataBot: {}
 		}
 	}
 
@@ -67,7 +69,9 @@ class Orga extends Component{
     this.setState({ dataUpdate: { name: name } })
 	}
 
-	addBot() {
+	addBot(name) {
+		this.setState({ redirectBot: true })
+    this.setState({ dataBot: { name: name } })
 	}
 
 	goToIndex() {
@@ -90,6 +94,14 @@ class Orga extends Component{
     	return <Redirect to={{
         pathname: '/orgas/update_form',
         state: { id: this.state.dataUpdate }
+      }}
+      />
+    }
+
+    if (this.state.redirectBot){
+    	return <Redirect to={{
+        pathname: "/orgas/bots_form",
+        state: { id: this.state.dataBot }
       }}
       />
     }
@@ -133,7 +145,7 @@ class Orga extends Component{
             			<div>
             			<button onClick={()=>{this.deleteOrga(props.original.name)}} >Delete</button>
             			<button onClick={()=>{this.updateOrga(props.original.name)}} >Update</button>
-            			<button onClick={()=>{this.addBot()}} >Create Bot</button>
+            			<button onClick={()=>{this.addBot(props.original.name)}} >Create Bot</button>
             			<button onClick={()=>{this.addInvalidWord(props.original.name)}} >Add invalid word</button>
             			</div>
             			)

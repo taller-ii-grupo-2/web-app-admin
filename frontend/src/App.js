@@ -6,9 +6,11 @@ import User from './components/users'
 import Orga from './components/organizations'
 import Index from './components/indice'
 import Word from './components/words'
+import Bots from './components/bots'
 import UserForm from './forms/user_form'
 import UpdateUsersForm from './forms/update_users_form'
 import UpdateOrgasForm from './forms/update_orgas_form'
+import BotForm from './forms/bots_form'
 import OrgaForm from './forms/orga_form'
 import WordForm from './forms/words_form'
 
@@ -42,6 +44,10 @@ class App extends Component {
                 render={routeProps => <WordForm {...routeProps}/>} />
               <Route exact path="/orgas/words"
                 render={routeProps => <Word {...routeProps}/>} />
+              <Route exact path="/orgas/bots"
+                render={routeProps => <Bots {...routeProps}/>} />
+              <Route exact path="/orgas/bots_form"
+                render={routeProps => <BotForm {...routeProps}/>} />
             </div>
           </Router>
         </div>
