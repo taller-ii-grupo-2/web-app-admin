@@ -10,7 +10,14 @@ class User extends Component{
 		super()
 		this.state = {
 			users: [],
-			redirect:false
+      redirect: false,
+      redirectToUpdate: false,
+      dataRedirectToUpdate: {},
+      urlToRedirectToUpdate: '/users/update/form',
+      redirectToOrgaForm: false,
+      dataRedirectOrga: {},
+      urlRedirectToOrgaForm: '/orgas/form',
+      redirectIndex: false
 		}
 	}
 
@@ -32,20 +39,19 @@ class User extends Component{
 			}
 		)
 	}
-	addUser(){
-		this.setState({redirect:true})
-	}
-
+	addUser() {
+    this.setState({ redirect: true })
+  }
+  
 	deleteUser(mail){
-		this.setState({refresh:true})
 		Http.delete('admin/users?mail='+mail).then(res=>{
 			if (res.status === OK){
 				toast.success('User deleted', { position: toast.POSITION.TOP_CENTER })
 				this.refresh()
-			}else if (res.status === BAD_REQUEST){
+			}else if (res.status === BAD_REQUEST) {
 					return res.json()
 			}else{
-				sessionStorage.removeItem('token')
+				// sessionStorage.removeItem('token')
 				toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
 			}
 		})
@@ -57,17 +63,47 @@ class User extends Component{
 		)
 	}
 
-	updateUser(user){
-
+	updateUser(mail) {
+    this.setState({ redirectToUpdate: true })
+    this.setState({ dataRedirectToUpdate: { mail: mail } })
 	}
+
+	createOrga(mail) {
+		this.setState({ redirectToOrgaForm: true })
+		this.setState({ dataRedirectOrga: { mail: mail } })
+	}
+
+  goToIndex(){
+    this.setState({ redirectIndex: true })
+  }
 
   render() {
   	if (!sessionStorage.getItem('token')){
   		return <Redirect to='/login' />;
   	}
-  	if(this.state.redirect){
+  	if (this.state.redirect){
   		return <Redirect to='/users/form' />;
-  	}
+    }
+
+    if (this.state.redirectIndex){
+      return <Redirect to='/index' />;
+    }
+
+    if (this.state.redirectToUpdate) {
+      return <Redirect to={{
+        pathname: this.state.urlToRedirectToUpdate,
+        state: { id: this.state.dataRedirectToUpdate }
+      }}
+      />
+    }
+
+    if (this.state.redirectToOrgaForm){
+    	return <Redirect to={{
+        pathname: this.state.urlRedirectToOrgaForm,
+        state: { id: this.state.dataRedirectOrga }
+      }}
+      />
+    }
 
     return (
     	<div className="User">
@@ -99,7 +135,8 @@ class User extends Component{
             		return(
             			<div>
             			<button onClick={()=>{this.deleteUser(props.original.mail)}} >Delete</button>
-            			<button onClick={()=>{console.log('props', props)}} >Update</button>
+            			<button onClick={()=>{this.updateUser(props.original.mail)}} >Update</button>
+            			<button onClick={()=>{this.createOrga(props.original.mail)}} >Create Organization</button>
             			</div>
             			)
             	}
@@ -112,6 +149,9 @@ class User extends Component{
 				 <div>
 				 <button onClick={()=>{this.addUser()}} >Add</button>
 				 </div>
+         <div>
+         <button onClick={()=>{this.goToIndex()}} >Index</button>
+         </div>
 				 <ToastContainer/>
 			</div>
     );

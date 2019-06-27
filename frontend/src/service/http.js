@@ -31,7 +31,7 @@ class Http {
     return response
   }
 
-  postput (url, payload, callback) {
+  put (url, payload, callback) {
     let response = fetch(fixed_url + url, {
       method: 'PUT',
       headers: this.getHeaders(),
