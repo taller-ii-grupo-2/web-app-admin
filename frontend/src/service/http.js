@@ -8,7 +8,7 @@ class Http {
   get (url, callback) {
     let response = fetch(fixed_url + url, {
       method: 'GET',
-      headers: this.getHeaders()
+      headers: {'Accept': 'application/json'}
     })
     return response
   }
@@ -42,7 +42,6 @@ class Http {
 
   getHeaders () {
     let headers = {
-      'Accept': 'application/json',
       'Content-Type': 'application/json'
     }
     if (sessionStorage.getItem('token')){
