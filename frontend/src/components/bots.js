@@ -9,12 +9,9 @@ class Bots extends Component{
 	constructor(){
 		super()
 		this.state = {
-			Botss: [],
+			bots: [],
 			redirect: false,
-      redirectUpdate: false,
-      dataUpdate: {},
-      redirectWords: false,
-      dataWords: {},
+      redirectBot: false,
       redirectIndex: false
 		}
 	}
@@ -24,43 +21,43 @@ class Bots extends Component{
 	}
 
 	refresh(){
-		// Http.get('admin/Botss').then(res=>{
-		// 	if (res.status === OK){
-		// 		return res.json()
-		// 	}else{
-		// 			sessionStorage.removeItem('token')
-		// 	}
-		// })
-		// .then(response => {
-		// 	if (response)
-		// 		this.setState({Botss:response})
-		// 	}
-		// )
+		Http.get('admin/bots').then(res=>{
+			if (res.status === OK){
+				return res.json()
+			}else{
+					sessionStorage.removeItem('token')
+			}
+		})
+		.then(response => {
+			if (response)
+				this.setState({bots:response})
+			}
+		)
 	}
+
+  addBot(){
+    this.setState({ redirectBot: true })
+  }
 
   
 	deleteBots(name){
-		// Http.delete('admin/Botss?name='+name).then(res=>{
-		// 	if (res.status === OK){
-		// 		toast.success('Bots deleted', { position: toast.POSITION.TOP_CENTER })
-		// 		this.refresh()
-		// 	}else if (res.status === BAD_REQUEST) {
-		// 			return res.json()
-		// 	}else{
-		// 		sessionStorage.removeItem('token')
-		// 		toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
-		// 	}
-		// })
-		// .then(response => {
-		// 	if (response){
-		// 		toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
-		// 	}
-		// }
-		// )
-	}
-
-
-	addBot() {
+		Http.delete('admin/bots?name='+name).then(res=>{
+			if (res.status === OK){
+				toast.success('Bots deleted', { position: toast.POSITION.TOP_CENTER })
+				this.refresh()
+			}else if (res.status === BAD_REQUEST) {
+					return res.json()
+			}else{
+				sessionStorage.removeItem('token')
+				toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
+			}
+		})
+		.then(response => {
+			if (response){
+				toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
+			}
+		}
+		)
 	}
 
 	goToIndex() {
@@ -71,37 +68,26 @@ class Bots extends Component{
   	if (!sessionStorage.getItem('token')){
   		return <Redirect to='/login' />;
   	}
-  	if (this.state.redirect){
-  		return <Redirect to='/Botss/form' />;
-    }
 
     if (this.state.redirectIndex){
   		return <Redirect to='/index' />;
     }
 
-    if (this.state.redirectUpdate){
-    	return <Redirect to={{
-        pathname: '/Botss/update_form',
-        state: { id: this.state.dataUpdate }
-      }}
-      />
-    }
-
-    if (this.state.redirectWords){
-    	return <Redirect to={{
-        pathname: '/Botss/words_form',
-        state: { id: this.state.dataWords }
+    if (this.state.redirectBot){
+     return <Redirect to={{
+        pathname: "/orgas/bots_form",
+        state: { id: {name: ''} }
       }}
       />
     }
 
     return (
-    	<div className="User">
-				<header className="User-header">
-					<h1 className="Botss-title"> Botss </h1>
+    	<div className="Bot">
+				<header className="Bot-header">
+					<h1 className="Bot-title"> Botss </h1>
 				</header>
 				<ReactTable
-          data={[]}
+          data={this.state.bots}
           columns={[
             {
               Header: "Bot",
@@ -109,7 +95,11 @@ class Bots extends Component{
             },
             {
               Header: "Organization",
-              accessor: 'creator'
+              accessor: 'org_id'
+            },
+            {
+              Header: "URL",
+              accessor: 'url'
             },
             {
             	Header:'Actions',
@@ -125,6 +115,8 @@ class Bots extends Component{
           defaultPageSize={10}
           className="-striped -highlight"
         />
+        <br />
+        <button onClick={()=>{this.addBot()}} >Add</button>
         <br />
         <button onClick={()=>{this.goToIndex()}} >Index</button>
 				 <ToastContainer/>

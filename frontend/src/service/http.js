@@ -8,7 +8,7 @@ class Http {
   get (url, callback) {
     let response = fetch(fixed_url + url, {
       method: 'GET',
-      headers: {'Accept': 'application/json'}
+      headers: this.getHeaders()
     })
     return response
   }
@@ -28,6 +28,10 @@ class Http {
       headers: this.getHeaders(),
       body: JSON.stringify(payload)
     })
+    .then(resp =>{
+      console.log(resp.clone())
+      return resp.clone()
+    })
     return response
   }
 
@@ -42,7 +46,9 @@ class Http {
 
   getHeaders () {
     let headers = {
-      'Content-Type': 'application/json'
+      'Accept': 'application/json cors',
+      'Content-Type': 'application/json',
+      'Cache-Control': 'no-cache'
     }
     if (sessionStorage.getItem('token')){
       headers.Authorization = 'Bearer ' + sessionStorage.getItem('token')

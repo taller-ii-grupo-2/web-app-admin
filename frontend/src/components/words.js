@@ -26,7 +26,7 @@ class Word extends Component{
 			if (res.status === OK){
 				return res.json()
 			}else{
-					//sessionStorage.removeItem('token')
+					sessionStorage.removeItem('token')
 			}
 		})
 		.then(response => {

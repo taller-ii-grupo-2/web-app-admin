@@ -51,7 +51,7 @@ class User extends Component{
 			}else if (res.status === BAD_REQUEST) {
 					return res.json()
 			}else{
-				// sessionStorage.removeItem('token')
+				sessionStorage.removeItem('token')
 				toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
 			}
 		})
@@ -59,8 +59,11 @@ class User extends Component{
 			if (response){
 				toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
 			}
-		}
-		)
+		})
+    .catch(err => {
+      alert(err)
+      toast.error(err, { position: toast.POSITION.TOP_CENTER })
+    })  
 	}
 
 	updateUser(mail) {

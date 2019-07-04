@@ -1,5 +1,5 @@
 build:
   docker:
-    web: Dockerfile
+    web: Dockerfile-prod
   config:
     PORT: 3000

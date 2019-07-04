@@ -9,6 +9,8 @@ class BotForm extends Component{
 		super()
 		this.state = {
 			name: '',
+			description: '',
+			url: '',
 			redirect:false
 		}
 	}
@@ -17,33 +19,43 @@ class BotForm extends Component{
 		this.setState({name:text.target.value})
 	}
 
+	handleDescription(text){
+		this.setState({description:text.target.value})
+	}
+
+		handleURL(text){
+		this.setState({url:text.target.value})
+	}
+
 	cancel(){
 		this.setState({redirect:true})
 	}
 
 	addBot(){
-		// let obj = {}
-		// obj.org_name = this.props.location.state.id.name
-		// obj.word = this.state.word
+		let obj = {}
+		obj.org_name = this.props.location.state.id.name
+		obj.name = this.state.name
+		obj.url = this.state.url
+		obj.description = this.state.description
 
-		// Http.post('organizations/invalidwords',obj)
-		// .then(res => {
-		// 	if (res.status === OK){
-		// 		this.setState({redirect: true})
-		// 		toast.success('Word added', { position: toast.POSITION.TOP_CENTER })
-		// 	}
-		// 	return res.json()
-		// })
-		// .then(response => {
-		// 	if (!this.state.redirect){
-		// 		if (response){
-		// 			toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
-		// 		}else{
-		// 			toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
-		// 			sessionStorage.removeItem('token')
-		// 		}
-		// 	}
-  //   })	
+		Http.post('admin/bots',obj)
+		.then(res => {
+			if (res.status === OK){
+				this.setState({redirect: true})
+				toast.success('Bot added', { position: toast.POSITION.TOP_CENTER })
+			}
+			return res.json()
+		})
+		.then(response => {
+			if (!this.state.redirect){
+				if (response){
+					toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
+				}else{
+					toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
+					sessionStorage.removeItem('token')
+				}
+			}
+    })	
 	}
 
   render() {
@@ -59,9 +71,11 @@ class BotForm extends Component{
 				<header className="BotForm-header">
 					<h1 className="BotForm-title"> Add bot for {this.props.location.state.id.name} </h1>
 				</header>
-
-			
-				<input type="text" placeholder="Enter  bot name" onChange={(text) => {this.handleName(text)}}/>
+				<input type="text" placeholder="Enter bot name" onChange={(text) => {this.handleName(text)}}/>
+				<br/>
+				<input type="text" placeholder="Enter url" onChange={(text) => {this.handleURL(text)}}/>
+				<br/>
+				<input type="text" placeholder="Enter description" onChange={(text) => {this.handleDescription(text)}}/>
 				<br/>
 				<button onClick={()=>{this.cancel()}} >Cancel</button>
 				<button onClick={()=>{this.addBot()}} >Add</button>

@@ -54,6 +54,7 @@ class UserForm extends Component{
 				this.setState({redirect: true})
 				toast.success('User added', { position: toast.POSITION.TOP_CENTER })
 			}
+			console.log(res)
 			return res.json()
 		})
 		.then(response => {
@@ -62,9 +63,13 @@ class UserForm extends Component{
 					toast.error(response.message, { position: toast.POSITION.TOP_CENTER })
 				}else{
 					toast.error('Session expired', { position: toast.POSITION.TOP_CENTER })
-					sessionStorage.removeItem('token')
+				//	sessionStorage.removeItem('token')
 				}
 			}
+    })
+    .catch(err => {
+    	alert(err)
+    	toast.error(err, { position: toast.POSITION.TOP_CENTER })
     })	
 	}
 

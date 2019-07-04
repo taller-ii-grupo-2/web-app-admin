@@ -36,6 +36,9 @@ class Index extends Component{
 					<div>
 					<Link to={"/orgas/bots"} activeClassName="bots">Bots</Link>
 					</div>
+					<div>
+					<Link to={"/graph"} activeClassName="graph">Graph</Link>
+					</div>
 					<button onClick={()=>{this.logout()}} >Logut</button>
 					<ToastContainer/>
 				</header>
